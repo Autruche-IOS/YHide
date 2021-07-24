@@ -11,3 +11,7 @@
 // No products in next videos reco
 @interface YTWatchNextResultsViewController
 @end
+
+// No explore catgories
+@interface YTInnerTubeCollectionViewController
+@end

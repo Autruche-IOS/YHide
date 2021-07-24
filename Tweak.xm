@@ -47,7 +47,33 @@
     // Do the redering
     %orig;
 }
+%end
 
+// No explore catgories
+%hook YTInnerTubeCollectionViewController
+- (void)addSectionsFromArray:(id)arg1 {
+    NSMutableArray *array = (NSMutableArray*) arg1;
 
-//MSHookIvar<YTISectionListRenderer *>(self, "_watchNextResults")
+    // No crash pls
+    int count = [array count];
+    if (count >= 3)
+    {
+        // Only apply to the shelf
+        bool isShelf = [[NSString stringWithFormat:@"%@", [array objectAtIndex:0]] containsString:@"&destination_shelf.eml|"];
+        if (isShelf)
+        {
+#if DEBUG
+            NSLog(@"<YTHide> Hiding the explore header (shelf)");
+#endif
+            // Remove the first 3 useless shelf sections
+            for (int i = 3; i--;)
+            {
+                [array removeObjectAtIndex:i];
+            }
+        }
+    }
+
+    // Nothing to see here
+    %orig;
+}
 %end
