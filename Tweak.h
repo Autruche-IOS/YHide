@@ -25,3 +25,14 @@
 
 @interface YTSubheaderContainerView : UIView <YTPageStyling>
 @end
+
+// No products in next videos reco
+@interface YTMultiSizeViewController : UIViewController
+@end
+@interface YTCollectionViewController : YTMultiSizeViewController
+@end
+@interface YTInnerTubeCollectionViewController : YTCollectionViewController
+@end
+
+@interface YTWatchNextResultsViewController : YTInnerTubeCollectionViewController
+@end
