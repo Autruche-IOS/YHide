@@ -18,3 +18,10 @@
 
 @interface YTMySubsFilterHeaderViewController : UIViewController <YTVariableHeightHeaderViewControllerAttachedHeader, YTFeedFilterChipBarNavigationDelegate, YTResponseViewController, YTUserPullToRefreshObserver>
 @end
+
+// No home categories
+@protocol YTPageStyling <NSObject>
+@end
+
+@interface YTSubheaderContainerView : UIView <YTPageStyling>
+@end
