@@ -27,15 +27,15 @@
 - (void)addSectionsFromArray:(id)arg1 {
 
     NSMutableArray *array = (NSMutableArray*) arg1;
-    NSString *itemClass;
+    NSString *itemString;
 
     // Loop over all the received elements
     for (int i = [array count]; i--;)
     {
-        itemClass = NSStringFromClass([[array objectAtIndex:i] class]);
+        itemString = [NSString stringWithFormat:@"%@", [array objectAtIndex:i]];
 
-        // If the object is of an ad class - we can't link the class', so we only compare the names
-        if ([itemClass isEqualToString:@"YTICompanionAdRenderer"] || [itemClass isEqualToString:@"YTIItemSectionRenderer"])
+        // Is carousel -- ad
+        if ([itemString containsString:@"product_carousel.eml|"])
         {
 #if DEBUG
             NSLog(@"<YTHide> Found a merch ad, getting rid of it");
