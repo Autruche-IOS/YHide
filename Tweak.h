@@ -1,38 +1,13 @@
 #import <UIKit/UIKit.h>
 
 // Sub list removal -- YTMySubsFilterHeaderViewController
-@protocol YTVariableHeightHeaderViewControllerAttachedHeader <NSObject>
-@end
-@protocol YTFeedFilterChipBarNavigationDelegate <NSObject>
-@end
-@protocol YTResponder <NSObject>
-@end
-@protocol YTRendererController <YTResponder>
-@end
-@protocol YTScrollToModelProtocol <YTResponder>
-@end
-@protocol YTResponseViewController <YTRendererController, YTScrollToModelProtocol>
-@end
-@protocol YTUserPullToRefreshObserver <NSObject>
-@end
-
-@interface YTMySubsFilterHeaderViewController : UIViewController <YTVariableHeightHeaderViewControllerAttachedHeader, YTFeedFilterChipBarNavigationDelegate, YTResponseViewController, YTUserPullToRefreshObserver>
+@interface YTMySubsFilterHeaderViewController : UIViewController
 @end
 
 // No home categories
-@protocol YTPageStyling <NSObject>
-@end
-
-@interface YTSubheaderContainerView : UIView <YTPageStyling>
+@interface YTSubheaderContainerView : UIView
 @end
 
 // No products in next videos reco
-@interface YTMultiSizeViewController : UIViewController
-@end
-@interface YTCollectionViewController : YTMultiSizeViewController
-@end
-@interface YTInnerTubeCollectionViewController : YTCollectionViewController
-@end
-
-@interface YTWatchNextResultsViewController : YTInnerTubeCollectionViewController
+@interface YTWatchNextResultsViewController
 @end
