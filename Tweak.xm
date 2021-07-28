@@ -1,11 +1,16 @@
 #import "Tweak.h"
 
+#ifdef DEBUG
+# define DEBUG_PRINT(x, ...) NSLog(x, ##__VA_ARGS__)
+#else
+# define DEBUG_PRINT(x, ...) // Nothing
+#endif
+
+
 // Sub list removal
 %hook YTMySubsFilterHeaderViewController
 - (void)loadView {
-#if DEBUG
-    NSLog(@"<YTHide> Not rendering the Sub list");
-#endif
+    DEBUG_PRINT(@"<YTHide> Not rendering the Sub list");
 }
 - (_Bool)isAttachedToPage{
     return false;
@@ -16,74 +21,56 @@
 %hook YTSubheaderContainerView
 - (void)setFrame:(struct CGRect)arg1 {
     // If the size in 0, we just don't see it :)
-#if DEBUG
-    NSLog(@"<YTHide> Hiding home categories");
-#endif
+    DEBUG_PRINT(@"<YTHide> Hiding home categories");
 }
 %end
 
-// No tshirsts ad
-%hook YTWatchNextResultsViewController
+// Remove a lot of cards
+%hook YTInnerTubeCollectionViewController
 - (void)addSectionsFromArray:(id)arg1 {
-
     NSMutableArray *array = (NSMutableArray*) arg1;
-    NSString *itemString;
+    int count = [array count];
 
-    // Loop over all the received elements
-    for (int i = [array count]; i--;)
+    /*
+    video_with_context
+        -> Related videos
+
+    YTISlimVideoMetadataSectionRendererRoot_slimVideoDescriptionRenderer
+    YTISlimVideoMetadataSectionRendererRoot_slimVideoInformationRenderer
+        -> Video description
+
+    comments_composite_entry_point.eml|
+    _COMMENT_
+        -> Comment section
+
+    style_type: STYLE_HOME_FILTER
+        -> Home
+
+    compact_video.eml|
+    compact_playlist.eml|
+    post_base_wrapper.eml|
+    channel_renderer
+    channel_about_metadata_renderer
+    playlist_video_list_renderer
+        -> Channel's stuff
+    */
+    NSString * allowedItems = @".*(video_with_context|YTISlimVideoMetadataSectionRendererRoot_slimVideoInformationRenderer|comments_composite_entry_point\\.eml\\||_COMMENT_|\
+style_type: STYLE_HOME_FILTER|compact_video.eml\\||compact_playlist.eml\\||post_base_wrapper.eml\\||channel_renderer|channel_about_metadata_renderer|playlist_video_list_renderer).*";
+
+    NSString *itemString = nil;
+    for (int i = count; i--;)
     {
         itemString = [NSString stringWithFormat:@"%@", [array objectAtIndex:i]];
 
-        // Is carousel -- ad
-        if ([itemString containsString:@"product_carousel.eml|"])
+        // Not an allowed element
+        if (![[NSPredicate predicateWithFormat:@"SELF MATCHES %@", allowedItems] evaluateWithObject:itemString])
         {
-#if DEBUG
-            NSLog(@"<YTHide> Found a merch ad, getting rid of it");
-#endif
+            DEBUG_PRINT(@"<YTHide> Found an unwanted element, removing it: %@", itemString);
             [array removeObjectAtIndex:i];
         }
     }
 
-    // Do the redering
-    %orig;
-}
-%end
-
-// No explore catgories
-%hook YTInnerTubeCollectionViewController
-- (void)addSectionsFromArray:(id)arg1 {
-    NSMutableArray *array = (NSMutableArray*) arg1;
-
-    // No crash pls
-    int count = [array count];
-    if (count >= 3)
-    {
-        // Only apply to the shelf
-        bool isShelf = [[NSString stringWithFormat:@"%@", [array objectAtIndex:0]] containsString:@"&destination_shelf.eml|"];
-        if (isShelf)
-        {
-#if DEBUG
-            NSLog(@"<YTHide> Hiding the explore header (shelf)");
-#endif
-            // Remove the first 3 useless shelf sections
-            bool startRemoving = false;
-            for (int i = count; i--;)
-            {
-                // Erase up to shelf_header.eml|
-                if (!startRemoving)
-                {
-                    startRemoving = [[NSString stringWithFormat:@"%@", [array objectAtIndex:i]] containsString:@"shelf_header.eml|"];
-                }
-
-                if (startRemoving)
-                {
-                    [array removeObjectAtIndex:i];
-                }
-            }
-        }
-    }
-
-    // Nothing to see here
+    // Nothing to see here, let youube add the remaining
     %orig;
 }
 %end
@@ -91,9 +78,6 @@
 
 // No landscpae overlay
 %hook YTMainAppVideoPlayerOverlayViewController
-- (_Bool)shouldEnableRelatedVideos {
-    return false;
-}
 - (_Bool)shouldShowAutonavEndscreen {
     return false;
 }

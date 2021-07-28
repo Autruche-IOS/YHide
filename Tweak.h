@@ -8,14 +8,10 @@
 @interface YTSubheaderContainerView : UIView
 @end
 
-// No products in next videos reco
-@interface YTWatchNextResultsViewController
-@end
-
 // No explore catgories
 @interface YTInnerTubeCollectionViewController
 @end
 
-// No landscpae overlay
+// Remove a lot of cards
 @interface YTMainAppVideoPlayerOverlayViewController : UIViewController
 @end
