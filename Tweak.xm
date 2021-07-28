@@ -35,6 +35,10 @@
     video_with_context
         -> Related videos
 
+    YTIFullscreenEngagementOverlayRendererRoot_fullscreenEngagementChannelRenderer
+    related_watch_next_end_screen
+        -> Videos cards in landscape, if this is removed, the app crashes on full rotation
+
     YTISlimVideoMetadataSectionRendererRoot_slimVideoDescriptionRenderer
     YTISlimVideoMetadataSectionRendererRoot_slimVideoInformationRenderer
         -> Video description
@@ -54,8 +58,9 @@
     playlist_video_list_renderer
         -> Channel's stuff
     */
-    NSString * allowedItems = @".*(video_with_context|YTISlimVideoMetadataSectionRendererRoot_slimVideoInformationRenderer|comments_composite_entry_point\\.eml\\||_COMMENT_|\
-style_type: STYLE_HOME_FILTER|compact_video.eml\\||compact_playlist.eml\\||post_base_wrapper.eml\\||channel_renderer|channel_about_metadata_renderer|playlist_video_list_renderer).*";
+    NSString * allowedItems = @".*(video_with_context|YTIFullscreenEngagementOverlayRendererRoot_fullscreenEngagementChannelRenderer|related_watch_next_end_screen|\
+YTISlimVideoMetadataSectionRendererRoot_slimVideoInformationRenderer|comments_composite_entry_point\\.eml\\||_COMMENT_|style_type: STYLE_HOME_FILTER|\
+compact_video.eml\\||compact_playlist.eml\\||post_base_wrapper.eml\\||channel_renderer|channel_about_metadata_renderer|playlist_video_list_renderer).*";
 
     NSString *itemString = nil;
     for (int i = count; i--;)
@@ -78,9 +83,10 @@ style_type: STYLE_HOME_FILTER|compact_video.eml\\||compact_playlist.eml\\||post_
 
 // No landscpae overlay
 %hook YTMainAppVideoPlayerOverlayViewController
+- (_Bool)shouldEnableRelatedVideos {
+    return false;
+}
 - (_Bool)shouldShowAutonavEndscreen {
     return false;
 }
 %end
-
-
