@@ -66,9 +66,19 @@
             NSLog(@"<YTHide> Hiding the explore header (shelf)");
 #endif
             // Remove the first 3 useless shelf sections
-            for (int i = 3; i--;)
+            bool startRemoving = false;
+            for (int i = count; i--;)
             {
-                [array removeObjectAtIndex:i];
+                // Erase up to shelf_header.eml|
+                if (!startRemoving)
+                {
+                    startRemoving = [[NSString stringWithFormat:@"%@", [array objectAtIndex:i]] containsString:@"shelf_header.eml|"];
+                }
+
+                if (startRemoving)
+                {
+                    [array removeObjectAtIndex:i];
+                }
             }
         }
     }
@@ -88,3 +98,5 @@
     return false;
 }
 %end
+
+
