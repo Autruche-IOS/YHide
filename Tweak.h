@@ -15,3 +15,7 @@
 // No explore catgories
 @interface YTInnerTubeCollectionViewController
 @end
+
+// No landscpae overlay
+@interface YTMainAppVideoPlayerOverlayViewController : UIViewController
+@end

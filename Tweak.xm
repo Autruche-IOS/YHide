@@ -77,3 +77,14 @@
     %orig;
 }
 %end
+
+
+// No landscpae overlay
+%hook YTMainAppVideoPlayerOverlayViewController
+- (_Bool)shouldEnableRelatedVideos {
+    return false;
+}
+- (_Bool)shouldShowAutonavEndscreen {
+    return false;
+}
+%end
