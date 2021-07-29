@@ -35,9 +35,16 @@
     video_with_context
         -> Related videos
 
+    share_targets
+        -> Share button
+
     YTIFullscreenEngagementOverlayRendererRoot_fullscreenEngagementChannelRenderer
     related_watch_next_end_screen
+    LiveChat
         -> Videos cards in landscape, if this is removed, the app crashes on full rotation
+
+    YTIInfoCardCollectionRenderer
+        -> Elements that if removed can cause crash / layout error after a full rotate from landscape
 
     YTISlimVideoMetadataSectionRendererRoot_slimVideoDescriptionRenderer
     YTISlimVideoMetadataSectionRendererRoot_slimVideoInformationRenderer
@@ -58,9 +65,10 @@
     playlist_video_list_renderer
         -> Channel's stuff
     */
-    NSString * allowedItems = @".*(video_with_context|YTIFullscreenEngagementOverlayRendererRoot_fullscreenEngagementChannelRenderer|related_watch_next_end_screen|\
-YTISlimVideoMetadataSectionRendererRoot_slimVideoInformationRenderer|comments_composite_entry_point\\.eml\\||_COMMENT_|style_type: STYLE_HOME_FILTER|\
-compact_video.eml\\||compact_playlist.eml\\||post_base_wrapper.eml\\||channel_renderer|channel_about_metadata_renderer|playlist_video_list_renderer).*";
+    NSString * allowedItems = @".*(video_with_context|share_targets|YTIFullscreenEngagementOverlayRendererRoot_fullscreenEngagementChannelRenderer|related_watch_next_end_screen|LiveChat|\
+YTIInfoCardCollectionRenderer|\
+YTISlimVideoMetadataSectionRendererRoot_slimVideoDescriptionRenderer|YTISlimVideoMetadataSectionRendererRoot_slimVideoInformationRenderer|comments_composite_entry_point\\.eml\\||_COMMENT_|\
+style_type: STYLE_HOME_FILTER|compact_video.eml\\||compact_playlist.eml\\||post_base_wrapper.eml\\||channel_renderer|channel_about_metadata_renderer|playlist_video_list_renderer).*";
 
     NSString *itemString = nil;
     for (int i = count; i--;)
