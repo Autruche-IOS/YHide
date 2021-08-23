@@ -35,6 +35,10 @@
     video_with_context
         -> Related videos
 
+    watch_card_rich_header_renderer
+    YTIHorizontalCardListRenderer
+        -> Search
+
     share_targets
         -> Share button
 
@@ -50,6 +54,10 @@
     YTISlimVideoMetadataSectionRendererRoot_slimVideoInformationRenderer
         -> Video description
 
+    YTIPlaylistPanelRenderer
+    playlist_video_list_renderer
+        -> Playlists
+
     comments_composite_entry_point.eml|
     _COMMENT_
         -> Comment section
@@ -57,18 +65,24 @@
     style_type: STYLE_HOME_FILTER
         -> Home
 
+    YTIShelfRenderer
     compact_video.eml|
     compact_playlist.eml|
     post_base_wrapper.eml|
     channel_renderer
     channel_about_metadata_renderer
-    playlist_video_list_renderer
         -> Channel's stuff
     */
-    NSString * allowedItems = @".*(video_with_context|share_targets|YTIFullscreenEngagementOverlayRendererRoot_fullscreenEngagementChannelRenderer|related_watch_next_end_screen|LiveChat|\
+    NSString * allowedItems = @".*(video_with_context|\
+watch_card_rich_header_renderer|YTIHorizontalCardListRenderer|\
+share_targets|\
+YTIFullscreenEngagementOverlayRendererRoot_fullscreenEngagementChannelRenderer|related_watch_next_end_screen|LiveChat|\
 YTIInfoCardCollectionRenderer|\
-YTISlimVideoMetadataSectionRendererRoot_slimVideoDescriptionRenderer|YTISlimVideoMetadataSectionRendererRoot_slimVideoInformationRenderer|comments_composite_entry_point\\.eml\\||_COMMENT_|\
-style_type: STYLE_HOME_FILTER|compact_video.eml\\||compact_playlist.eml\\||post_base_wrapper.eml\\||channel_renderer|channel_about_metadata_renderer|playlist_video_list_renderer).*";
+YTISlimVideoMetadataSectionRendererRoot_slimVideoDescriptionRenderer|YTISlimVideoMetadataSectionRendererRoot_slimVideoInformationRenderer|\
+YTIPlaylistPanelRenderer|playlist_video_list_renderer|\
+comments_composite_entry_point\\.eml\\||_COMMENT_|\
+style_type: STYLE_HOME_FILTER|\
+YTIShelfRenderer|compact_video.eml\\||compact_playlist.eml\\||post_base_wrapper.eml\\||channel_renderer|channel_about_metadata_renderer).*";
 
     NSString *itemString = nil;
     for (int i = count; i--;)
