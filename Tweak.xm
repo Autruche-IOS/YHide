@@ -6,31 +6,9 @@
 # define DEBUG_PRINT(x, ...) // Nothing
 #endif
 
-
-// Sub list removal
-%hook YTMySubsFilterHeaderViewController
-- (void)loadView {
-    DEBUG_PRINT(@"<YTHide> Not rendering the Sub list");
-}
-- (_Bool)isAttachedToPage{
-    return false;
-}
-%end
-
-// No home categories
-%hook YTSubheaderContainerView
-- (void)setFrame:(struct CGRect)arg1 {
-    // If the size in 0, we just don't see it :)
-    DEBUG_PRINT(@"<YTHide> Hiding home categories");
-}
-%end
-
-// Remove a lot of cards
-%hook YTInnerTubeCollectionViewController
-- (void)addSectionsFromArray:(id)arg1 {
-    NSMutableArray *array = (NSMutableArray*) arg1;
-    int count = [array count];
-
+// Create the compiled regex, for performance purposes
+NSPredicate *compiledRegex = nil;
+%ctor {
     /*
     video_with_context
         -> Related videos
@@ -84,16 +62,46 @@ comments_composite_entry_point\\.eml\\||_COMMENT_|\
 style_type: STYLE_HOME_FILTER|\
 YTIShelfRenderer|compact_video.eml\\||compact_playlist.eml\\||post_base_wrapper.eml\\||channel_renderer|channel_about_metadata_renderer).*";
 
-    NSString *itemString = nil;
-    for (int i = count; i--;)
-    {
-        itemString = [NSString stringWithFormat:@"%@", [array objectAtIndex:i]];
+    compiledRegex = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", allowedItems];
+}
 
-        // Not an allowed element
-        if (![[NSPredicate predicateWithFormat:@"SELF MATCHES %@", allowedItems] evaluateWithObject:itemString])
+// Sub list removal
+%hook YTMySubsFilterHeaderViewController
+- (void)loadView {
+    DEBUG_PRINT(@"<YTHide> Not rendering the Sub list");
+}
+- (_Bool)isAttachedToPage{
+    return false;
+}
+%end
+
+// No home categories
+%hook YTSubheaderContainerView
+- (void)setFrame:(struct CGRect)arg1 {
+    // If the size in 0, we just don't see it :)
+    DEBUG_PRINT(@"<YTHide> Hiding home categories");
+}
+%end
+
+// Remove a lot of cards
+%hook YTInnerTubeCollectionViewController
+- (void)addSectionsFromArray:(id)arg1 {
+    if (compiledRegex != nil)
+    {
+        NSMutableArray *array = (NSMutableArray*) arg1;
+        int count = [array count];
+
+        NSString *itemString = nil;
+        for (int i = count; i--;)
         {
-            DEBUG_PRINT(@"<YTHide> Found an unwanted element, removing it: %@", itemString);
-            [array removeObjectAtIndex:i];
+            itemString = [NSString stringWithFormat:@"%@", [array objectAtIndex:i]];
+
+            // Not an allowed element
+            if (![compiledRegex evaluateWithObject:itemString])
+            {
+                DEBUG_PRINT(@"<YTHide> Found an unwanted element, removing it: %@", itemString);
+                [array removeObjectAtIndex:i];
+            }
         }
     }
 
