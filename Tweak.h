@@ -1,13 +1,21 @@
 #import <UIKit/UIKit.h>
 
-// Sub list removal -- YTMySubsFilterHeaderViewController
-@interface YTMySubsFilterHeaderViewController : UIViewController
+/*****************************************************
+ * General
+ */
+@interface YTISectionListRenderer : NSObject
+- (id)contentsArray;
 @end
 
-// No home categories
-@interface YTSubheaderContainerView : UIView
+@interface YTISectionListSupportedRenderers : NSObject
 @end
 
-// Remove a lot of cards
-@interface YTMainAppVideoPlayerOverlayViewController : UIViewController
+// Tabs
+@interface YTPivotBarItemView : UIView
+@property (nonatomic,readonly) BOOL selected;
+- (void)didTapButton;
+@end
+
+@interface YTPivotBarView : UIView
+@property (nonatomic,readonly) NSMutableArray<YTPivotBarItemView*> * itemViews;
 @end
