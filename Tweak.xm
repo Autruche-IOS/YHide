@@ -270,6 +270,24 @@ BOOL alreadyWentToSebsTab = false;
 - (void)setPlayerToastText:(id)arg1 {
     DEBUG_PRINT(@"<YTHide> Not rendering the toast");
 }
+- (void)layoutSubviews {
+    DEBUG_PRINT(@"<YTHide> Not rendering the useless player buttons");
+    // Get the top buttons
+    NSArray *topSubViews = [[self topControlsAccessibilityContainerView] subviews];
+    int arrayCount = [topSubViews count];
+
+    // Hide them
+    for (int i = arrayCount; i--;)
+    {
+        // Options button is the exception
+        if (i != 4)
+        {
+            [[topSubViews objectAtIndex:i] setHidden:true];
+        }
+    }
+
+    %orig;
+}
 %end
 
 // No paid toast

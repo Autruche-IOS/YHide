@@ -23,4 +23,9 @@
 @property (nonatomic,readonly) NSMutableArray<YTPivotBarItemView*> * itemViews;
 @end
 
-
+/*****************************************************
+ * Videos player and co
+ */
+@interface YTMainAppControlsOverlayView : UIView
+- (id) topControlsAccessibilityContainerView;
+@end
