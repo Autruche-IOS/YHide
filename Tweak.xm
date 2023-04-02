@@ -253,3 +253,9 @@ BOOL alreadyWentToSebsTab = false;
     return false;
 }
 %end
+
+%hook YTMainAppControlsOverlayView
+- (void)setPlayerToastText:(id)arg1 {
+    DEBUG_PRINT(@"<YTHide> Not rendering the toast");
+}
+%end
