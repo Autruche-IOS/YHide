@@ -10,6 +10,9 @@
 @interface YTISectionListSupportedRenderers : NSObject
 @end
 
+@interface YTChipCloudCell : UIView
+@end
+
 // Tabs
 @interface YTPivotBarItemView : UIView
 @property (nonatomic,readonly) BOOL selected;
@@ -19,3 +22,5 @@
 @interface YTPivotBarView : UIView
 @property (nonatomic,readonly) NSMutableArray<YTPivotBarItemView*> * itemViews;
 @end
+
+

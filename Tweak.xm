@@ -183,6 +183,17 @@ BOOL isWhiteListed(id randomReceivedObject) {
 }
 %end
 
+// Remove the recommendation scroller
+%hook YTChipCloudCell
+- (void)setEntry:(id)arg1 {
+    DEBUG_PRINT(@"<YTHide> Not rendering the recommendation scroller");
+}
+- (void)layoutSubviews {
+    DEBUG_PRINT(@"<YTHide> Not rendering the recommendation scroller");
+    [self removeFromSuperview];
+}
+%end
+
 // Remove bottom tabs
 BOOL alreadyWentToSebsTab = false;
 %hook YTPivotBarView
@@ -254,8 +265,16 @@ BOOL alreadyWentToSebsTab = false;
 }
 %end
 
+// No toast
 %hook YTMainAppControlsOverlayView
 - (void)setPlayerToastText:(id)arg1 {
     DEBUG_PRINT(@"<YTHide> Not rendering the toast");
+}
+%end
+
+// No paid toast
+%hook YTPaidContentViewController
+- (void)loadView {
+    DEBUG_PRINT(@"<YTHide> Not rendering the AD warning");
 }
 %end
