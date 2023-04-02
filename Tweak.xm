@@ -184,6 +184,7 @@ BOOL isWhiteListed(id randomReceivedObject) {
 %end
 
 // Remove bottom tabs
+BOOL alreadyWentToSebsTab = false;
 %hook YTPivotBarView
 - (void)layoutSubviews {
     for (int i = [self.itemViews count]; i--;)
@@ -207,9 +208,10 @@ BOOL isWhiteListed(id randomReceivedObject) {
     %orig;
 
     // Let's focus on the subs ;)
-    if (![self.itemViews[3] selected])
+    if (!alreadyWentToSebsTab)
     {
         DEBUG_PRINT(@"<YTHide> Going to the Subs tab");
+        alreadyWentToSebsTab = true;
         [self.itemViews[3] didTapButton];
     }
 }
